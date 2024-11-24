@@ -1,0 +1,5 @@
+https://amplpy.ampl.com/en/latest/
+3aed3b27-4680-4009-b71d-1e5ba3abaa13
+
+ampl.solve(solver="cplex")
+python -m amplpy.modules install cplex
