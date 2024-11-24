@@ -1,0 +1,23 @@
+data;
+
+# number od periods  [number]
+param n:= 6; 
+# days per period  [number]
+param nd:= 20; 
+# hours per day [h/day]
+param hd:= 8;
+# overtime per worker per period allowed [h/worker/P]
+param otlimit:= 10; # [number]
+# Demand each period
+param D := 1 1600 2 3000 3 3200 4 3800 5 2200 6 2200;
+# COST Parameters
+param Mc:= 10; # Material cost [item]
+param Rc:= 4; # Regular time cost [h]
+param Oc:= 6; # Overtime cost [h]
+param Ic:= 2; # Holding cost [item/month]
+param Bc:= 5; # Backlog/stockout cost [item/month]
+param Sc:= 30; # Subcontracting cost [item]
+param Lh:= 4; # Labour hours required [item]
+param Hc:= 300; # Hiring cost [worker]
+param Lc:= 500; # Layoff cost [worker]
+
