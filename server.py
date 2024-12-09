@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
+from flask_cors import CORS
 from amplpy import AMPL
 
 app = Flask(__name__)
+CORS(app)
+
 api = Api(app, version="1.0", title="AMPL Solver API",
           description="API for solving AMPL optimization models using provided parameters.")
 
