@@ -12,7 +12,7 @@ ns = api.namespace('solver', description="AMPL Solver operations")
 # Define the Swagger model for input parameters
 input_model = api.model('SolveParameters', {
     'n': fields.Integer(required=True, description="Number of periods", default=6),
-    'nd': fields.Integer(required=True, description="Days per period", default=20),
+    'nd': fields.Raw(required=True, description="Days per period (e.g., {1: 20, 2: 22, ...})", default={1: 20, 2: 22, 3: 21, 4: 19, 5: 20, 6: 21}),
     'hd': fields.Integer(required=True, description="Hours per day", default=8),
     'otlimit': fields.Integer(required=True, description="Overtime limit per worker per period", default=10),
     'D': fields.Raw(required=True, description="Demand per period (e.g., {1: 1600, 2: 3000, ...})", default={1: 1600, 2: 3000, 3: 3200, 4: 3800, 5: 2200, 6: 2200}),
@@ -50,7 +50,10 @@ class SolveAMPL(Resource):
 
         # Required parameters
         ampl.param['n'] = data['n']     # Number of periods / Liczba okresów
-        ampl.param['nd'] = data['nd']   # Days per period / Liczba dni na okres
+        # ampl.param['nd'] = data['nd']   # Days per period / Liczba dni na okres
+
+        ampl.param['nd'] = {int(k): v for k, v in data['nd'].items()}  # Ustawienie liczby dni dla każdego okresu
+
         ampl.param['hd'] = data['hd']   # Hours per day / Liczba godzin na dzień
         ampl.param['otlimit'] = data['otlimit'] # Overtime limit per worker per period / Limit nadgodzin na pracownika na okres
 

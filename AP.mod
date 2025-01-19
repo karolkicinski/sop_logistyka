@@ -2,7 +2,7 @@
 
 param n;                # Liczba okresów [liczba]
 param D{1..n};          # Popyt na produkty w każdym okresie [jednostki/okres]
-param nd;               # Liczba dni w jednym okresie [dni/okres]
+param nd{1..n};         # Liczba dni w danym okresie [dni/okres]
 param hd;               # Liczba godzin pracy na dzień [godziny/dzień]
 param otlimit;          # Maksymalna liczba nadgodzin dozwolonych na pracownika w jednym okresie [godziny/pracownik/okres]
 param Lh;               # Liczba godzin pracy potrzebna do wyprodukowania jednego produktu [godziny/jednostka]
@@ -31,12 +31,12 @@ var I{0..n} integer >=0;    # Zapasy w sklepie w okresie i [jednostki/okres]
 
 # =========> FUNKCJA CELU
 
-minimize OverallCost: sum{i in 1..n}(Rc*hd*nd*W[i] + Oc*O[i] + Hc*H[i] + Lc*L[i] + Ic*I[i] + Bc*S[i] + Mc*P[i] + Sc*C[i]);
+minimize OverallCost: sum{i in 1..n}(Rc*hd*nd[i]*W[i] + Oc*O[i] + Hc*H[i] + Lc*L[i] + Ic*I[i] + Bc*S[i] + Mc*P[i] + Sc*C[i]);
 # Koszt regularnej pracy + Koszt nadgodzin + Koszt zatrudnienia + Koszt zwolnień + Koszt magazynowania + Koszt niedoborów + Koszt materiałów + Koszt podwykonawstwa
 
 # Rachunek jednostek dla każdego składnika:
 
-    # Koszt regularnego czasu pracy (Rc * hd * nd * W[i]):
+    # Koszt regularnego czasu pracy (Rc * hd * nd[i] * W[i]):
     # [waluta/godzina] * [godziny/dzień] * [dni/okres] * [pracownicy/okres] = [waluta/okres]
 
     # Koszt nadgodzin (Oc * O[i]):
@@ -75,7 +75,7 @@ cW{i in 1..n}: W[i] = W[i-1]+H[i]-L[i];
     # [jednostki/okres] <= ([godziny/dzień] / [godziny/jednostka]) * [dni/okres] * [pracownicy/okres] + ([godziny/okres] / [godziny/jednostka])
     # [jednostki/okres] <= [jednostki/okres] + [jednostki/okres]
 
-cP{i in 1..n}: P[i] <= hd/Lh*nd*W[i]+O[i]/Lh;
+cP{i in 1..n}: P[i] <= hd/Lh*nd[i]*W[i]+O[i]/Lh;
 
     # Równowaga między popytem, produkcją, podwykonawstwem i zapasami
     # [jednostki/okres] + [jednostki/okres] + [jednostki/okres] = [jednostki/okres] + [jednostki/okres] + [jednostki/okres] - [jednostki/okres]
